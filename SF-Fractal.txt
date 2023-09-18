@@ -19,7 +19,6 @@ else
     }
     local thread
     local frame = 0
-    local fps=1/300
     
     render.createRenderTarget("fractal")
     
@@ -123,12 +122,6 @@ else
             render.selectRenderTarget("fractal")
             
             local now = timer.systime()
-            
-            if frame>now then 
-                return 
-            end
-            
-            frame=now+fps
             
             if !thread then
                 thread=coroutine.create(function()
