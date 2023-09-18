@@ -18,7 +18,6 @@ else
         loaded=false
     }
     local thread
-    local frame = 0
     
     render.createRenderTarget("fractal")
     
@@ -137,7 +136,7 @@ else
                             local index=(y*512/scale+x)*4
             
                             render.setColor(Color(rgb[1],rgb[2],rgb[3]))
-                            render.drawRect(x*scale,y*scale,scale,scale)
+                            render.drawRectFast(x*scale,y*scale,scale,scale)
                         end
                         
                         coroutine.yield()
@@ -145,7 +144,7 @@ else
                 end)
             end
 
-            if coroutine.status(thread)=="suspended" and quotaAverage()<quotaMax()*0.8 then
+            if coroutine.status(thread)=="suspended" and quotaAverage()<quotaMax()*0.95 then
                 coroutine.resume(thread)
             end
             
@@ -158,8 +157,8 @@ else
         
     hook.add("mouseWheeled","",function(delta)
         if x and data.src then
-            local w=math.floor((1024/data.src.RatioX)*((delta>0 and 0.5 or 1)/2))
-            local h=math.floor(512*((delta>0 and 0.5 or 1)/2))
+            local w=math.floor((1024/data.src.RatioX)*((delta>0 and 0.2 or 1)/2))
+            local h=math.floor(512*((delta>0 and 0.2 or 1)/2))
 
             data.xCartMin=pixelToCartX((x/data.src.RatioX)-w)
             data.xCartMax=pixelToCartX((x/data.src.RatioX)+w)
