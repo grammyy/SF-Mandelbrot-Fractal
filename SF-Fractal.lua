@@ -18,8 +18,8 @@ else
         loaded=false
     }
     local thread
-    version="beta_1"
-    repo="https://raw.githubusercontent.com/Elias-bff/Blender-OBJ-SF-lib/main/version"
+    version=1.6
+    repo="https://raw.githubusercontent.com/Elias-bff/SF-Mandelbrot-Fractal/main/version"
     
     http.get("https://raw.githubusercontent.com/Elias-bff/SF-linker/main/linker.lua",function(data)
         loadstring(data)()
@@ -147,14 +147,16 @@ else
             
                             render.setColor(Color(rgb[1],rgb[2],rgb[3]))
                             render.drawRectFast(x*scale,y*scale,scale,scale)
+                            
+                            if quotaAverage()>0.006*0.9 then
+                                coroutine.yield()
+                            end
                         end
-                        
-                        coroutine.yield()
                     end
                 end)
             end
 
-            if coroutine.status(thread)=="suspended" and quotaAverage()<quotaMax()*0.95 then
+            if coroutine.status(thread)=="suspended" and quotaAverage()<0.9*0.95 then
                 coroutine.resume(thread)
             end
             
@@ -165,10 +167,10 @@ else
         end
     end)
         
-    hook.add("mouseWheeled","",function(delta)
-        if x and data.src then
-            local w=math.floor((1024/data.src.RatioX)*((delta>0 and 0.2 or 1)/2))
-            local h=math.floor(512*((delta>0 and 0.2 or 1)/2))
+    hook.add("inputPressed","",function(key)
+        if x and data.src and key==15 then
+            local w=math.floor((1024)*((!player():keyDown(79) and 0.2 or 1)/2))
+            local h=math.floor(512*((!player():keyDown(79) and 0.2 or 1)/2))
 
             data.xCartMin=pixelToCartX((x/data.src.RatioX)-w)
             data.xCartMax=pixelToCartX((x/data.src.RatioX)+w)
