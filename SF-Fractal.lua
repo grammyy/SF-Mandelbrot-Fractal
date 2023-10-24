@@ -18,6 +18,16 @@ else
         loaded=false
     }
     local thread
+    version="beta_1"
+    repo="https://raw.githubusercontent.com/Elias-bff/Blender-OBJ-SF-lib/main/version"
+    
+    http.get("https://raw.githubusercontent.com/Elias-bff/SF-linker/main/linker.lua",function(data)
+        loadstring(data)()
+        
+        load({
+            "https://raw.githubusercontent.com/Elias-bff/SF-linker/main/public%20libs/version%20changelog.lua"
+        })
+    end)
     
     render.createRenderTarget("fractal")
     
